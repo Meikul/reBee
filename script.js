@@ -1,9 +1,26 @@
 window.onload = windowLoaded;
 
+const state = {
+  gameData: {},
+  currentInput: '',
+}
+
 async function windowLoaded() {
   const gameData = await getGame()
   console.log(gameData);
-  fillHexes(gameData.letters, gameData.center)
+  state.gameData = gameData
+  fillHexes(state.gameData.letters, state.gameData.center)
+
+  const hexes = document.querySelectorAll('.hex')
+  hexes.forEach(hex => {
+    hex.addEventListener('touchstart', hexClick)
+    hex.addEventListener('touchend', hexRelease)
+    hex.addEventListener('mousedown', hexClick)
+    hex.addEventListener('mouseup', hexRelease)
+    hex.addEventListener('mouseleave', hexRelease)
+  })
+
+  document.addEventListener('keydown', keyPress)
 }
 
 async function getGame(type = 'random') {
@@ -126,4 +143,41 @@ function fillHexes(letters, center) {
   for (let i=0; i<letters.length; i++) {
     document.getElementById('hex-letter-'+i).innerHTML = letters[i].toUpperCase()
   }
+}
+
+function hexClick(){
+  const letter = this.querySelector('.hex-letter')
+  typeLetter(letter.innerHTML)
+  this.classList.add('activated')
+}
+
+function hexRelease() {
+   this.classList.remove('activated')
+}
+
+function keyPress(e) {
+  const key = e.key.toUpperCase()
+  if(/^[A-Z]$/.test(key)) typeLetter(key)
+  else if(e.key === 'Enter') checkWord()
+  else if (e.key === 'Backspace') deleteLetter()
+}
+
+function updateInputBox() {
+  document.getElementById('text-input').innerHTML = state.currentInput
+}
+
+function typeLetter(letter) {
+  letter = letter.toUpperCase()
+  state.currentInput += letter
+  updateInputBox()
+}
+
+function checkWord() {
+  state.currentInput = ''
+  updateInputBox()
+}
+
+function deleteLetter() {
+  state.currentInput = state.currentInput.slice(0, -1)
+  updateInputBox()
 }

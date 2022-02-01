@@ -1,11 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@600&family=Ubuntu:wght@500&family=Work+Sans:wght@600&display=swap");
 body {
-  font-family: 'Cabin', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   font-size: 30px;
+  height: 1000px;
 }
 
-.hive .text-input {
+.input-panel .text-input {
   text-align: center;
+  display: block;
 }
 
 .hex-container {
@@ -16,35 +18,43 @@ body {
 
 .hex-row {
   clear: left;
-  margin-left: 46.8px;
 }
 
-.hex-row.center-row {
-  margin-left: 0px;
+.hex-row.centered {
+  margin-left: 81px;
 }
 
 .hex {
   position: relative;
-  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-          clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  height: 100px;
-  width: 86.6px;
+  -webkit-clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
+          clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
+  height: 86.6px;
+  width: 100px;
   display: block;
   float: left;
-  margin-left: 7px;
-  margin-bottom: -18px;
+  margin-right: -19px;
+  margin-bottom: -40.3px;
   cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.hex:hover::after {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
-  top: 5px;
-  left: 5px;
+.hex.lower {
+  margin-top: 49.3px;
+}
+
+.hex.activated::after {
+  width: calc(100% - 5px);
+  height: calc(100% - 5px);
+  top: 2.5px;
+  left: 2.5px;
   background: #d2d2d2;
 }
 
-.hex:hover.center-hex::after {
+.hex.activated.center-hex::after {
   background: #dfc625;
 }
 
@@ -55,8 +65,8 @@ body {
   top: 0;
   left: 0;
   background: #e2e2e2;
-  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-          clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
+          clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
   height: 100%;
   width: 100%;
   z-index: 1;

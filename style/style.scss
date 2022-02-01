@@ -4,20 +4,20 @@
 // @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@600&family=Ubuntu:wght@500&family=Work+Sans:wght@600&display=swap');
 
-$hex-height: 100px;
-$hex-width: $hex-height*0.866;
-$hex-spacing: 7px;
-$lg-font-size: 30px;
+$hexWidth: 100px;
+$hexHeight: $hexWidth*0.866;
+$hexSpacing: 6px;
 
 body{
-  font-family: 'Cabin', sans-serif;
-  font-size: $lg-font-size;
-  // background: #111;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 30px;
+  height: 1000px;
 }
 
-.hive{
+.input-panel{
   .text-input{
     text-align: center;
+    display: block;
   }
 }
 
@@ -29,30 +29,38 @@ body{
 
 .hex-row{
   clear: left;
-  margin-left: ($hex-width+$hex-spacing)/2;
-  &.center-row{
-    margin-left: 0px;
+  // margin-left: ($hexWidth+$hexSpacing)/2;
+  &.centered{
+    margin-left: $hexWidth + $hexSpacing - ($hexWidth/4);
   }
 }
 
 .hex{
   position: relative;
   // background: #e2e2e2;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
+  // clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   // width = height*sqrt(3)/2
-  height: $hex-height;
-  width: $hex-width;
+  height: $hexHeight;
+  width: $hexWidth;
   display: block;
   float: left;
-  margin-left: $hex-spacing;
-  margin-bottom: -($hex-height/4)+$hex-spacing;
+  // margin-left: $hexSpacing;
+  // margin-right: -($hexWidth/4)+$hexSpacing;
+  margin-right: $hexSpacing - ($hexWidth/4);
+  margin-bottom: ($hexSpacing/2) - ($hexHeight/2);
   cursor: pointer;
-  &:hover{
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  &.lower{
+    margin-top: ($hexHeight/2)+$hexSpacing;
+  }
+  &.activated{
     &::after{
-      width: calc(100% - 10px);
-      height: calc(100% - 10px);
-      top: 5px;
-      left: 5px;
+      width: calc(100% - 5px);
+      height: calc(100% - 5px);
+      top: 2.5px;
+      left: 2.5px;
       background: #d2d2d2;
     }
     &.center-hex::after{
@@ -66,7 +74,8 @@ body{
     top: 0;
     left: 0;
     background: #e2e2e2;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    // clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
     height: 100%;
     width: 100%;
     z-index: 1;
@@ -80,6 +89,6 @@ body{
     z-index: 2;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);;
+    transform: translate(-50%, -50%);
   }
 }
