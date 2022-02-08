@@ -2,13 +2,18 @@ window.onload = windowLoaded;
 
 const state = {
   gameData: {},
-  currentInput: '',
+  foundWords: [],
+  allLetters: '',
+  score: 0,
+  currentInput: 'herd',
 }
 
 async function windowLoaded() {
+  updateInputBox()
   const gameData = await getGame()
   console.log(gameData);
   state.gameData = gameData
+  state.allLetters = state.gameData.center + state.gameData.letters
   fillHexes(state.gameData.letters, state.gameData.center)
 
   const hexes = document.querySelectorAll('.hex')
@@ -19,7 +24,6 @@ async function windowLoaded() {
     hex.addEventListener('mouseup', hexRelease)
     hex.addEventListener('mouseleave', hexRelease)
   })
-
   document.addEventListener('keydown', keyPress)
 }
 
@@ -138,7 +142,6 @@ async function getGame(type = 'random') {
 }
 
 function fillHexes(letters, center) {
-  // const centerHex = document.getElementById('hex-letter-6').innerHTML = center.toUpperCase()
   const centerHex = document.getElementById('center-hex-letter').innerHTML = center.toUpperCase()
   for (let i=0; i<letters.length; i++) {
     document.getElementById('hex-letter-'+i).innerHTML = letters[i].toUpperCase()
@@ -163,18 +166,77 @@ function keyPress(e) {
 }
 
 function updateInputBox() {
-  document.getElementById('text-input').innerHTML = state.currentInput
+  document.getElementById('text-input').innerHTML = state.currentInput.toUpperCase()
+}
+
+function updateScoreBox() {
+  console.log(state.score);
+  document.getElementById('score-display').innerHTML = state.score
 }
 
 function typeLetter(letter) {
-  letter = letter.toUpperCase()
+  letter = letter.toLowerCase()
   state.currentInput += letter
   updateInputBox()
 }
 
 function checkWord() {
+  console.log(state.currentInput);
+  if(state.currentInput.length < 4){
+    console.log('too short');
+  }
+  else if(hasInvalidLetter(state.currentInput)){
+    console.log('invalid letter');
+  }
+  else if(state.foundWords.includes(state.currentInput)){
+    console.log('already found');
+  }
+  else if(!state.gameData.wordlist.includes(state.currentInput)){
+    console.log('not on list');
+  }
+  else{
+    console.log('valid');
+    state.score += scoreWord(state.currentInput)
+    state.foundWords.push(state.currentInput)
+  }
   state.currentInput = ''
   updateInputBox()
+  updateScoreBox()
+}
+
+function hasInvalidLetter(word) {
+  let invalid = false
+  for (let i = 0; i < word.length; i++) {
+    const letter = word[i];
+    if(!state.allLetters.includes(letter)){
+      invalid = true
+      break
+    }
+  }
+  return invalid
+}
+
+function scoreWord(word) {
+  let score = 0
+  if(word.length === 4){
+    score = 1
+  }
+  else{
+    score = word.length
+  }
+
+  let isPanagram = true
+  for(let i = 0; i < state.allLetters.length; i++){
+    if(!state.currentInput.includes(state.allLetters[i])){
+      isPanagram = false
+    }
+  }
+  if(isPanagram){
+    console.log('Panagram');
+    score += 7
+  }
+
+  return score
 }
 
 function deleteLetter() {

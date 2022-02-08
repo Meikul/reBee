@@ -1,19 +1,91 @@
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@600&family=Ubuntu:wght@500&family=Work+Sans:wght@600&display=swap");
 body {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Cabin', sans-serif;
   font-size: 30px;
   height: 1000px;
+  margin: 0;
 }
 
-.input-panel .text-input {
-  text-align: center;
+#game-container {
+  position: absolute;
+  width: 100%;
+  max-width: 700px;
+  padding-top: 30px;
+}
+
+#score-panel {
+  position: relative;
+  width: 50%;
+  float: right;
+}
+
+#input-panel {
+  float: left;
+  width: 50%;
+  position: relative;
+  padding-bottom: 49.3px;
+}
+
+#input-panel #text-input {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 41px;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  font-size: 35px;
   display: block;
 }
 
+#input-panel #text-input::after {
+  position: absolute;
+  content: '';
+  right: -5px;
+  top: 4px;
+  display: block;
+  height: calc(100% - 8px);
+  width: 2px;
+  background: #fde227;
+  -webkit-animation: 1s infinite normal flashing;
+          animation: 1s infinite normal flashing;
+}
+
+@-webkit-keyframes flashing {
+  from {
+    opacity: 0;
+  }
+  49% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes flashing {
+  from {
+    opacity: 0;
+  }
+  49% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .hex-container {
+  width: 262px;
   position: relative;
-  top: 0;
-  left: 0;
+  top: 47px;
+  padding-bottom: 49.3px;
+  margin: 0 auto;
 }
 
 .hex-row {
@@ -22,6 +94,12 @@ body {
 
 .hex-row.centered {
   margin-left: 81px;
+}
+
+.hex-row::after {
+  content: '';
+  display: table;
+  clear: both;
 }
 
 .hex {
