@@ -2,7 +2,7 @@
 // https://jtauber.github.io/articles/css-hexagon.html
 
 // @import url('https://fonts.googleapis.com/css2?family=Cabin:wght@500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@600&family=Ubuntu:wght@500&family=Work+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400,600&family=Ubuntu:wght@500&family=Work+Sans:wght@600&display=swap');
 
 $hexWidth: 100px;
 $hexHeight: $hexWidth*0.866;
@@ -10,6 +10,7 @@ $hexSpacing: 6px;
 
 body{
   font-family: 'Cabin', sans-serif;
+  font-weight: 600;
   font-size: 30px;
   height: 1000px;
   margin: 0;
@@ -20,6 +21,8 @@ body{
   width: 100%;
   max-width: 700px;
   padding-top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 #score-panel{
@@ -38,9 +41,29 @@ body{
   //   clear: both;
   //   display: block;
   // }
-  #text-input{
+  #message-box{
     position: absolute;
     top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    padding: 10px 10px;
+    border-radius: 3px;
+    z-index: 2;
+    display: block;
+    &.error{
+      background-color: black;
+      color: white;
+    }
+  }
+  #text-input{
+    position: absolute;
+    top: 50px;
     left: 50%;
     height: 41px;
     transform: translateX(-50%);
@@ -79,7 +102,7 @@ body{
   width: ($hexWidth * 3) + ($hexSpacing * 2) - ($hexWidth / 2);
   position: relative;
   // left: 0;
-  top: 47px;
+  top: 97px;
   padding-bottom: ($hexHeight/2)+$hexSpacing;
   margin: 0 auto;
   // padding-left: $hexSpacing;

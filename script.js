@@ -180,22 +180,35 @@ function typeLetter(letter) {
   updateInputBox()
 }
 
+function showError(message) {
+  const errBox = document.getElementById('error-message')
+  errBox.innerHTML = message
+  errBox.classList.add('active')
+  setTimeout(() => {
+    const errBox = document.getElementById('error-message')
+    errBox.classList.remove('active')
+  }, 700);
+}
+
 function checkWord() {
   console.log(state.currentInput);
   if(state.currentInput.length < 4){
     console.log('too short');
+    showError('Word too short')
   }
   else if(hasInvalidLetter(state.currentInput)){
     console.log('invalid letter');
+    showError('Invalid letter')
   }
   else if(state.foundWords.includes(state.currentInput)){
     console.log('already found');
+    showError('Word already found')
   }
   else if(!state.gameData.wordlist.includes(state.currentInput)){
     console.log('not on list');
+    showError('Not on word list')
   }
   else{
-    console.log('valid');
     state.score += scoreWord(state.currentInput)
     state.foundWords.push(state.currentInput)
   }

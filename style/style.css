@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Cabin:wght@600&family=Ubuntu:wght@500&family=Work+Sans:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cabin:wght@400,600&family=Ubuntu:wght@500&family=Work+Sans:wght@600&display=swap");
 body {
   font-family: 'Cabin', sans-serif;
+  font-weight: 600;
   font-size: 30px;
   height: 1000px;
   margin: 0;
@@ -11,6 +12,9 @@ body {
   width: 100%;
   max-width: 700px;
   padding-top: 30px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
 }
 
 #score-panel {
@@ -26,9 +30,32 @@ body {
   padding-bottom: 49.3px;
 }
 
-#input-panel #text-input {
+#input-panel #message-box {
   position: absolute;
   top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  font-size: 15px;
+  font-weight: 400;
+  white-space: nowrap;
+  padding: 10px 10px;
+  border-radius: 3px;
+  z-index: 2;
+  display: block;
+}
+
+#input-panel #message-box.error {
+  background-color: black;
+  color: white;
+}
+
+#input-panel #text-input {
+  position: absolute;
+  top: 50px;
   left: 50%;
   height: 41px;
   -webkit-transform: translateX(-50%);
@@ -83,7 +110,7 @@ body {
 .hex-container {
   width: 262px;
   position: relative;
-  top: 47px;
+  top: 97px;
   padding-bottom: 49.3px;
   margin: 0 auto;
 }
