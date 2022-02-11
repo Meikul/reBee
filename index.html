@@ -3,17 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Page Title</title>
+  <title>Today's Puzzle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="style/style.css" />
 </head>
 <body>
   <div id="game-container">
-    <div id="score-panel">
-      <div id="score-display"></div>
-    </div>
     <div id="input-panel">
-      <div id="message-box" class="active">Word already found</div>
+      <div id="message-box">Word already found</div>
       <div id="text-input"></div>
       <div class="hex-container">
         <div class="hex-row">
@@ -45,7 +42,17 @@
         </div>
       </div>
     </div>
+    <div id="score-panel">
+      <div id="score-display">Score: <span id="score-number"></span></div>
+      <div id="rank"></div>
+      <div id="word-count">You've found <span id="word-count-number">0</span> words</div>
+      <ul id="found-list">
+      </ul>
+    </div>
   </div>
+  <!-- <script type="module">
+    import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js'
+  </script> -->
   <script type="text/javascript" src="script.js"></script>
 </body>
 </html>
