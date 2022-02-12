@@ -15,13 +15,23 @@ async function windowLoaded() {
   state.allLetters = state.gameData.center + state.gameData.letters
   fillHexes(state.gameData.letters, state.gameData.center)
 
+  document.getElementById('delete-btn').addEventListener('click', deleteLetter)
+  document.getElementById('shuffle-btn').addEventListener('click', shuffleLetters)
+  document.getElementById('enter-btn').addEventListener('click', checkWord)
+
+  const clickable = document.querySelectorAll('.clickable')
+  clickable.forEach(elem => {
+    elem.addEventListener('touchstart', highlight)
+    elem.addEventListener('touchend', unhighlight)
+    elem.addEventListener('mousedown', highlight)
+    elem.addEventListener('mouseup', unhighlight)
+    elem.addEventListener('mouseleave', unhighlight)
+  })
+
   const hexes = document.querySelectorAll('.hex')
   hexes.forEach(hex => {
     hex.addEventListener('touchstart', hexPress)
-    hex.addEventListener('touchend', hexRelease)
     hex.addEventListener('mousedown', hexPress)
-    hex.addEventListener('mouseup', hexRelease)
-    hex.addEventListener('mouseleave', hexRelease)
   })
   document.addEventListener('keydown', keyPress)
   updateInputBox()
@@ -31,116 +41,140 @@ async function windowLoaded() {
 async function getGame(type = 'random') {
   if(type !== 'today' && type !== 'random') return
   // const response = fetch(`https://freebee.fun/cgi-bin/random`)
-  const response = fetch(`https://freebee.fun/play/today`)
-  return (await response).json()
-  // const response = {
-  //   center: "h",
-  //   letters: "ecrdoi",
-  //   total: 530,
-  //   wordlist: [
-  //   "cheder",
-  //   "cheer",
-  //   "cheered",
-  //   "cheerer",
-  //   "cheerier",
-  //   "cheerio",
-  //   "cheero",
-  //   "chic",
-  //   "chicer",
-  //   "chichi",
-  //   "chico",
-  //   "chid",
-  //   "chide",
-  //   "chided",
-  //   "chider",
-  //   "chiro",
-  //   "chirr",
-  //   "chirre",
-  //   "chirred",
-  //   "choice",
-  //   "choicer",
-  //   "choir",
-  //   "choired",
-  //   "chord",
-  //   "chorded",
-  //   "chore",
-  //   "chored",
-  //   "choreic",
-  //   "choreoid",
-  //   "choric",
-  //   "chorioid",
-  //   "choroid",
-  //   "coheir",
-  //   "cohere",
-  //   "cohered",
-  //   "coherer",
-  //   "coho",
-  //   "cooch",
-  //   "creche",
-  //   "dichroic",
-  //   "dreich",
-  //   "eche",
-  //   "eched",
-  //   "echo",
-  //   "echoed",
-  //   "echoer",
-  //   "echoic",
-  //   "heder",
-  //   "heed",
-  //   "heeded",
-  //   "heeder",
-  //   "heir",
-  //   "heired",
-  //   "herd",
-  //   "herded",
-  //   "herder",
-  //   "herdic",
-  //   "here",
-  //   "hero",
-  //   "heroic",
-  //   "herried",
-  //   "hide",
-  //   "hided",
-  //   "hider",
-  //   "hied",
-  //   "hire",
-  //   "hired",
-  //   "hirer",
-  //   "hoed",
-  //   "hoer",
-  //   "hooch",
-  //   "hood",
-  //   "hooded",
-  //   "hoodie",
-  //   "hoodier",
-  //   "hoodoo",
-  //   "hoodooed",
-  //   "horde",
-  //   "horded",
-  //   "horrid",
-  //   "horror",
-  //   "ichor",
-  //   "ocher",
-  //   "ochered",
-  //   "ochre",
-  //   "ochred",
-  //   "ochroid",
-  //   "ohed",
-  //   "oohed",
-  //   "orchid",
-  //   "recherche",
-  //   "reechier",
-  //   "reecho",
-  //   "reechoed",
-  //   "rehire",
-  //   "rehired",
-  //   "rhodic",
-  //   "rich",
-  //   "richer"
-  //   ],
-  //   words: 99,
-  // }
-  // return response
+  // const response = fetch(`https://freebee.fun/play/today`)
+  // return (await response).json()
+  const response = {
+    center: "h",
+    letters: "ecrdoi",
+    total: 530,
+    wordlist: [
+    "cheder",
+    "cheer",
+    "cheered",
+    "cheerer",
+    "cheerier",
+    "cheerio",
+    "cheero",
+    "chic",
+    "chicer",
+    "chichi",
+    "chico",
+    "chid",
+    "chide",
+    "chided",
+    "chider",
+    "chiro",
+    "chirr",
+    "chirre",
+    "chirred",
+    "choice",
+    "choicer",
+    "choir",
+    "choired",
+    "chord",
+    "chorded",
+    "chore",
+    "chored",
+    "choreic",
+    "choreoid",
+    "choric",
+    "chorioid",
+    "choroid",
+    "coheir",
+    "cohere",
+    "cohered",
+    "coherer",
+    "coho",
+    "cooch",
+    "creche",
+    "dichroic",
+    "dreich",
+    "eche",
+    "eched",
+    "echo",
+    "echoed",
+    "echoer",
+    "echoic",
+    "heder",
+    "heed",
+    "heeded",
+    "heeder",
+    "heir",
+    "heired",
+    "herd",
+    "herded",
+    "herder",
+    "herdic",
+    "here",
+    "hero",
+    "heroic",
+    "herried",
+    "hide",
+    "hided",
+    "hider",
+    "hied",
+    "hire",
+    "hired",
+    "hirer",
+    "hoed",
+    "hoer",
+    "hooch",
+    "hood",
+    "hooded",
+    "hoodie",
+    "hoodier",
+    "hoodoo",
+    "hoodooed",
+    "horde",
+    "horded",
+    "horrid",
+    "horror",
+    "ichor",
+    "ocher",
+    "ochered",
+    "ochre",
+    "ochred",
+    "ochroid",
+    "ohed",
+    "oohed",
+    "orchid",
+    "recherche",
+    "reechier",
+    "reecho",
+    "reechoed",
+    "rehire",
+    "rehired",
+    "rhodic",
+    "rich",
+    "richer"
+    ],
+    words: 99,
+  }
+  return response
+}
+
+function shuffleLetters() {
+  let a = state.gameData.letters.split('')
+  const n = a.length;
+
+  for(let i = n - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+  const hexLetters = document.querySelectorAll('.hex-letter')
+  hexLetters.forEach(elem => {
+    elem.classList.add('hidden')
+  })
+
+  setTimeout(() => {
+    fillHexes(a.join(''), state.gameData.center)
+    const hexLetters = document.querySelectorAll('.hex-letter')
+    hexLetters.forEach(elem => {
+      elem.classList.remove('hidden')
+    })
+  }, 500)
 }
 
 function fillHexes(letters, center) {
@@ -154,12 +188,15 @@ function hexPress(e){
   e.preventDefault()
   const letter = this.querySelector('.hex-letter')
   typeLetter(letter.innerHTML)
-  this.classList.add('activated')
 }
 
-function hexRelease() {
-  if(this.classList.contains('activated')){
-    this.classList.remove('activated')
+function highlight() {
+  this.classList.add('highlighted')
+}
+
+function unhighlight() {
+  if(this.classList.contains('highlighted')){
+    this.classList.remove('highlighted')
   }
 }
 
@@ -175,6 +212,14 @@ function updateInputBox() {
 }
 
 function appendWordList(word) {
+  if(state.foundWords.length === 1){
+    document.getElementById('word-count-plural').innerHTML = ''
+  }
+  else{
+    document.getElementById('word-count-plural').innerHTML = 's'
+  }
+
+
   document.getElementById('word-count-number').innerHTML = state.foundWords.length
 
   const capitalizedWord = word[0].toUpperCase() + word.slice(1)
@@ -204,9 +249,14 @@ function updateScore() {
 }
 
 function typeLetter(letter) {
-  letter = letter.toLowerCase()
-  state.currentInput += letter
-  updateInputBox()
+  if(state.currentInput.length < 14){
+    letter = letter.toLowerCase()
+    state.currentInput += letter
+    updateInputBox()
+  }
+  else{
+    checkWord()
+  }
 }
 
 function showError(message) {

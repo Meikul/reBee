@@ -12,40 +12,45 @@
     <div id="input-panel">
       <div id="message-box">Word already found</div>
       <div id="text-input"></div>
-      <div class="hex-container">
+      <div id="hex-container">
         <div class="hex-row">
-          <div class="hex lower">
+          <div class="hex lower clickable">
             <div class="hex-letter" id="hex-letter-0"></div>
           </div>
-          <div class="hex">
+          <div class="hex clickable">
             <div class="hex-letter" id="hex-letter-1"></div>
           </div>
-          <div class="hex lower">
+          <div class="hex lower clickable">
             <div class="hex-letter" id="hex-letter-2"></div>
           </div>
         </div>
         <div class="hex-row">
-          <div class="hex lower">
+          <div class="hex lower clickable">
             <div class="hex-letter" id="hex-letter-3"></div>
           </div>
-          <div class="hex center-hex">
+          <div class="hex center-hex clickable">
             <div class="hex-letter" id="center-hex-letter"></div>
           </div>
-          <div class="hex lower">
+          <div class="hex lower clickable">
             <div class="hex-letter" id="hex-letter-4"></div>
           </div>
         </div>
         <div class="hex-row centered">
-          <div class="hex">
+          <div class="hex clickable">
             <div class="hex-letter" id="hex-letter-5"></div>
           </div>
         </div>
+      </div>
+      <div id="action-buttons">
+        <div id="delete-btn" class="btn btn-long clickable">Delete</div>
+        <div id="shuffle-btn" class="btn btn-long clickable">Shuffle</div>
+        <div id="enter-btn" class="btn btn-long clickable">Enter</div>
       </div>
     </div>
     <div id="score-panel">
       <div id="score-display">Score: <span id="score-number"></span></div>
       <div id="rank"></div>
-      <div id="word-count">You've found <span id="word-count-number">0</span> words</div>
+      <div id="word-count">You've found <span id="word-count-number">0</span> word<span id="word-count-plural">s</span></div>
       <ul id="found-list">
       </ul>
     </div>

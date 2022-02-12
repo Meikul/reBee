@@ -25,19 +25,23 @@ body{
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  align-items: center;
   justify-content: center;
+  flex-wrap: wrap-reverse;
 }
 
 #score-panel{
   position: relative;
-  width: 50%;
+  width: calc(50% - 10px);
   min-height: 400px;
+  min-width: 300px;
   border: 1px solid #e2e2e2;
   font-size: 18px;
   font-weight: 400;
   box-sizing: border-box;
   border-radius: 5px;
   padding: 15px 30px;
+  // margin: 52px 5px;
   #rank{
     display: inline;
     float: right;
@@ -81,10 +85,10 @@ body{
   from{
     opacity: 0;
   }
-  25%{
+  20%{
     opacity: 1;
   }
-  75%{
+  80%{
     opacity: 1;
   }
   to{
@@ -94,19 +98,24 @@ body{
 
 #input-panel{
   width: 50%;
+  min-width: 300px;
   height: 100%;
   position: relative;
-  padding-bottom: ($hexHeight/2)+$hexSpacing;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  // padding-bottom: ($hexHeight/2)+$hexSpacing;
   // &::after{
   //   content: '';
   //   clear: both;
   //   display: block;
   // }
   #message-box{
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    // position: absolute;
+    // top: 0;
+    // left: 50%;
+    // transform: translateX(-50%);
     border: 1px solid black;
     background-color: white;
     color: black;
@@ -117,26 +126,27 @@ body{
     border-radius: 3px;
     z-index: 2;
     opacity: 0;
-    display: none;
+    visibility: hidden;
     &.error{
       background-color: black;
       color: white;
       animation: 1s 1 normal fadeInOut;
-      display: block;
+      visibility: visible;
     }
     &.message{
       animation: 1s 1 normal fadeInOut;
-      display: block;
+      visibility: visible;
     }
   }
   #text-input{
-    position: absolute;
-    top: 50px;
-    left: 50%;
+    position: relative;
+    // position: absolute;
+    // top: 50px;
+    // left: 50%;
+    // transform: translateX(-50%);
     height: 41px;
-    transform: translateX(-50%);
     font-size: 35px;
-    display: block;
+    // display: block;
     &::after{
       position: absolute;
       content: '';
@@ -147,6 +157,48 @@ body{
       width: 2px;
       background: #fde227;
       animation: 1s infinite normal flashing;
+    }
+  }
+  #hex-container{
+    width: ($hexWidth * 3) + ($hexSpacing * 2) - ($hexWidth / 2);
+    // position: relative;
+    // left: 0;
+    // top: 110px;
+    padding-bottom: ($hexHeight/2)+$hexSpacing;
+    // margin: 0 auto;
+    // padding-left: $hexSpacing;
+    // padding-right: $hexSpacing;
+    // padding-top: $hexSpacing;
+    // &::after{
+    //   content: '';
+    //   clear: both;
+    //   display: table;
+    // }
+  }
+  #action-buttons{
+    display: flex;
+    font-size: 15px;
+    gap: 10px;
+    .btn{
+      border: 1px solid #e2e2e2;
+      height: 40px;
+      padding: 10px 10px;
+      box-sizing: border-box;
+      text-align: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: all 0.15s;
+      &.btn-long{
+        width: 80px;
+        border-radius: 20px;
+      }
+      &.btn-short{
+        width: 40px;
+        border-radius: 50%;
+      }
+      &.highlighted{
+        background: #d2d2d2;
+      }
     }
   }
 }
@@ -164,23 +216,6 @@ body{
   to{
     opacity: 1;
   }
-}
-
-.hex-container{
-  width: ($hexWidth * 3) + ($hexSpacing * 2) - ($hexWidth / 2);
-  position: relative;
-  // left: 0;
-  top: 110px;
-  padding-bottom: ($hexHeight/2)+$hexSpacing;
-  margin: 0 auto;
-  // padding-left: $hexSpacing;
-  // padding-right: $hexSpacing;
-  // padding-top: $hexSpacing;
-  // &::after{
-  //   content: '';
-  //   clear: both;
-  //   display: table;
-  // }
 }
 
 .hex-row{
@@ -206,9 +241,6 @@ body{
   float: left;
   margin-right: $hexSpacing - ($hexWidth/4);
   margin-bottom: ($hexSpacing/2) - ($hexHeight/2);
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
   &.lower{
     margin-top: ($hexHeight/2)+$hexSpacing;
   }
@@ -230,7 +262,7 @@ body{
     background: #fde227;
   }
 
-  &.activated{
+  &.highlighted{
     &::after{
       width: calc(100% - 5px);
       height: calc(100% - 5px);
@@ -251,5 +283,16 @@ body{
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    opacity: 1;
+    transition: opacity 0.5s;
+    &.hidden{
+      opacity: 0;
+    }
   }
+}
+
+.clickable{
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
