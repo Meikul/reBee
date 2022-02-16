@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="style/style.css" />
 </head>
-<body>
+<body class="dark-mode">
   <div id="game-container">
     <div id="input-panel">
       <div id="message-box">Word already found</div>
@@ -42,19 +42,19 @@
         </div>
       </div>
       <div id="action-buttons">
-        <div id="delete-btn" class="btn btn-long clickable">Delete</div>
-        <div id="shuffle-btn" class="btn btn-long clickable">Shuffle</div>
-        <div id="enter-btn" class="btn btn-long clickable">Enter</div>
+        <div id="delete-btn" class="btn clickable">Delete</div>
+        <div id="shuffle-btn" class="btn clickable">Shuffle</div>
+        <div id="enter-btn" class="btn clickable">Enter</div>
       </div>
     </div>
     <div id="score-panel">
       <div id="score-display">Score: <span id="score-number"></span></div>
       <div id="rank"></div>
       <div id="word-count">You've found <span id="word-count-number">0</span> word<span id="word-count-plural">s</span></div>
-      <ul id="found-list">
-      </ul>
+      <ul id="found-list"></ul>
     </div>
   </div>
+  <div id="new-game" class="btn clickable">New Random Game</div>
   <!-- <script type="module">
     import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js'
   </script> -->
