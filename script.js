@@ -5,7 +5,7 @@ const state = {
   foundWords: [],
   allLetters: '',
   score: 0,
-  currentInput: 'herd',
+  currentInput: '',
 }
 
 async function windowLoaded() {
@@ -18,6 +18,8 @@ async function windowLoaded() {
   document.getElementById('delete-btn').addEventListener('click', deleteLetter)
   document.getElementById('shuffle-btn').addEventListener('click', shuffleLetters)
   document.getElementById('enter-btn').addEventListener('click', checkWord)
+
+  document.getElementById('new-game').addEventListener('click', newRandomGame)
 
   const clickable = document.querySelectorAll('.clickable')
   clickable.forEach(elem => {
@@ -34,123 +36,142 @@ async function windowLoaded() {
     hex.addEventListener('mousedown', hexPress)
   })
   document.addEventListener('keydown', keyPress)
+
   updateInputBox()
   updateScore()
 }
 
-async function getGame(type = 'random') {
-  if(type !== 'today' && type !== 'random') return
-  // const response = fetch(`https://freebee.fun/cgi-bin/random`)
+async function newRandomGame() {
+  const gameData = await getGame('random')
+  console.log(gameData);
+  state.score = 0
+  state.currentInput = ''
+  state.foundWords = []
+  state.gameData = gameData
+  state.allLetters = state.gameData.center + state.gameData.letters
+  clearWorldList()
+  fillHexes(state.gameData.letters, state.gameData.center)
+  updateInputBox()
+  updateScore()
+}
+
+async function getGame(type = 'set') {
+  if(type !== 'set' && type !== 'random') return
   // const response = fetch(`https://freebee.fun/play/today`)
-  // return (await response).json()
-  const response = {
-    center: "h",
-    letters: "ecrdoi",
-    total: 530,
-    wordlist: [
-    "cheder",
-    "cheer",
-    "cheered",
-    "cheerer",
-    "cheerier",
-    "cheerio",
-    "cheero",
-    "chic",
-    "chicer",
-    "chichi",
-    "chico",
-    "chid",
-    "chide",
-    "chided",
-    "chider",
-    "chiro",
-    "chirr",
-    "chirre",
-    "chirred",
-    "choice",
-    "choicer",
-    "choir",
-    "choired",
-    "chord",
-    "chorded",
-    "chore",
-    "chored",
-    "choreic",
-    "choreoid",
-    "choric",
-    "chorioid",
-    "choroid",
-    "coheir",
-    "cohere",
-    "cohered",
-    "coherer",
-    "coho",
-    "cooch",
-    "creche",
-    "dichroic",
-    "dreich",
-    "eche",
-    "eched",
-    "echo",
-    "echoed",
-    "echoer",
-    "echoic",
-    "heder",
-    "heed",
-    "heeded",
-    "heeder",
-    "heir",
-    "heired",
-    "herd",
-    "herded",
-    "herder",
-    "herdic",
-    "here",
-    "hero",
-    "heroic",
-    "herried",
-    "hide",
-    "hided",
-    "hider",
-    "hied",
-    "hire",
-    "hired",
-    "hirer",
-    "hoed",
-    "hoer",
-    "hooch",
-    "hood",
-    "hooded",
-    "hoodie",
-    "hoodier",
-    "hoodoo",
-    "hoodooed",
-    "horde",
-    "horded",
-    "horrid",
-    "horror",
-    "ichor",
-    "ocher",
-    "ochered",
-    "ochre",
-    "ochred",
-    "ochroid",
-    "ohed",
-    "oohed",
-    "orchid",
-    "recherche",
-    "reechier",
-    "reecho",
-    "reechoed",
-    "rehire",
-    "rehired",
-    "rhodic",
-    "rich",
-    "richer"
-    ],
-    words: 99,
+  if(type === 'random'){
+    const response = fetch(`https://freebee.fun/cgi-bin/random`)
+    return (await response).json()
   }
-  return response
+  else{
+    const response = {
+      center: "h",
+      letters: "ecrdoi",
+      total: 530,
+      wordlist: [
+      "cheder",
+      "cheer",
+      "cheered",
+      "cheerer",
+      "cheerier",
+      "cheerio",
+      "cheero",
+      "chic",
+      "chicer",
+      "chichi",
+      "chico",
+      "chid",
+      "chide",
+      "chided",
+      "chider",
+      "chiro",
+      "chirr",
+      "chirre",
+      "chirred",
+      "choice",
+      "choicer",
+      "choir",
+      "choired",
+      "chord",
+      "chorded",
+      "chore",
+      "chored",
+      "choreic",
+      "choreoid",
+      "choric",
+      "chorioid",
+      "choroid",
+      "coheir",
+      "cohere",
+      "cohered",
+      "coherer",
+      "coho",
+      "cooch",
+      "creche",
+      "dichroic",
+      "dreich",
+      "eche",
+      "eched",
+      "echo",
+      "echoed",
+      "echoer",
+      "echoic",
+      "heder",
+      "heed",
+      "heeded",
+      "heeder",
+      "heir",
+      "heired",
+      "herd",
+      "herded",
+      "herder",
+      "herdic",
+      "here",
+      "hero",
+      "heroic",
+      "herried",
+      "hide",
+      "hided",
+      "hider",
+      "hied",
+      "hire",
+      "hired",
+      "hirer",
+      "hoed",
+      "hoer",
+      "hooch",
+      "hood",
+      "hooded",
+      "hoodie",
+      "hoodier",
+      "hoodoo",
+      "hoodooed",
+      "horde",
+      "horded",
+      "horrid",
+      "horror",
+      "ichor",
+      "ocher",
+      "ochered",
+      "ochre",
+      "ochred",
+      "ochroid",
+      "ohed",
+      "oohed",
+      "orchid",
+      "recherche",
+      "reechier",
+      "reecho",
+      "reechoed",
+      "rehire",
+      "rehired",
+      "rhodic",
+      "rich",
+      "richer"
+      ],
+      words: 99,
+    }
+    return response
+  }
 }
 
 function shuffleLetters() {
@@ -208,17 +229,27 @@ function keyPress(e) {
 }
 
 function updateInputBox() {
-  document.getElementById('text-input').innerHTML = state.currentInput.toUpperCase()
+  let output = ''
+  for (const char of state.currentInput) {
+    const cap = char.toUpperCase()
+    if(state.gameData.letters.includes(char)) output += `<span class="valid">${cap}</span>`
+    else if(state.gameData.center === char) output += `<span class="center">${cap}</span>`
+    else output += `<span class="invalid">${cap}</span>`
+  }
+  document.getElementById('text-input').innerHTML = output
 }
 
-function appendWordList(word) {
+function clearWorldList() {
+  document.getElementById('found-list').innerHTML = ''
+}
+
+function appendWorldList(word) {
   if(state.foundWords.length === 1){
     document.getElementById('word-count-plural').innerHTML = ''
   }
   else{
     document.getElementById('word-count-plural').innerHTML = 's'
   }
-
 
   document.getElementById('word-count-number').innerHTML = state.foundWords.length
 
@@ -232,7 +263,6 @@ function appendWordList(word) {
 
 function updateScore() {
   document.getElementById('score-number').innerHTML = state.score
-
 
   const scoreRatio = state.score / state.gameData.total
   let rank = ''
@@ -303,7 +333,7 @@ function checkWord() {
   else{
     state.score += scoreWord(state.currentInput)
     state.foundWords.push(state.currentInput)
-    appendWordList(state.currentInput)
+    appendWorldList(state.currentInput)
   }
   state.currentInput = ''
   updateScore()
@@ -345,6 +375,7 @@ function scoreWord(word) {
 
   return score
 }
+
 
 function deleteLetter() {
   state.currentInput = state.currentInput.slice(0, -1)

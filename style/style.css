@@ -64,12 +64,17 @@ body {
   margin-top: 20px;
   padding-left: 20px;
   font-size: 16px;
+  -webkit-column-count: 2;
+          column-count: 2;
+  -webkit-column-fill: auto;
+          column-fill: auto;
+  height: 375px;
 }
 
 #score-panel #found-list li {
   position: relative;
   list-style: none;
-  margin-top: 7px;
+  margin-bottom: 7px;
   padding-bottom: 1px;
 }
 
@@ -166,6 +171,18 @@ body {
   font-size: 35px;
 }
 
+#input-panel #text-input .valid {
+  color: black;
+}
+
+#input-panel #text-input .invalid {
+  color: #e2e2e2;
+}
+
+#input-panel #text-input .center {
+  color: #fde227;
+}
+
 #input-panel #text-input::after {
   position: absolute;
   content: '';
@@ -193,29 +210,30 @@ body {
 }
 
 #input-panel #action-buttons .btn {
+  width: 80px;
+}
+
+.btn {
   border: 1px solid #e2e2e2;
   height: 40px;
   padding: 10px 10px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  font-size: 15px;
   text-align: center;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   -webkit-transition: all 0.15s;
   transition: all 0.15s;
-}
-
-#input-panel #action-buttons .btn.btn-long {
-  width: 80px;
   border-radius: 20px;
 }
 
-#input-panel #action-buttons .btn.btn-short {
+.btn.btn-short {
   width: 40px;
   border-radius: 50%;
 }
 
-#input-panel #action-buttons .btn.highlighted {
+.btn.highlighted {
   background: #d2d2d2;
 }
 
@@ -334,5 +352,53 @@ body {
       -ms-user-select: none;
           user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+@media screen and (max-width: 599px) {
+  #score-panel {
+    min-height: 0;
+  }
+  #score-panel #found-list {
+    display: none;
+  }
+}
+
+#new-game {
+  width: 250px;
+  color: white;
+  margin-top: 50px;
+}
+
+body.dark-mode {
+  background: #181A1B;
+  color: white;
+}
+
+body.dark-mode .hex::after {
+  background: #282C2D;
+}
+
+body.dark-mode .hex.center-hex::after {
+  background: #cfb60f;
+}
+
+body.dark-mode .hex.highlighted::after {
+  background: #313638;
+}
+
+body.dark-mode .hex.highlighted.center-hex::after {
+  background: #dfc625;
+}
+
+body.dark-mode #input-panel #text-input .valid {
+  color: white;
+}
+
+body.dark-mode #input-panel #text-input .invalid {
+  color: #999999;
+}
+
+body.dark-mode #input-panel #text-input .center {
+  color: #fde227;
 }
 /*# sourceMappingURL=style.css.map */
