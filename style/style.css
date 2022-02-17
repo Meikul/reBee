@@ -69,6 +69,7 @@ body {
   -webkit-column-fill: auto;
           column-fill: auto;
   height: 375px;
+  overflow-x: scroll;
 }
 
 #score-panel #found-list li {

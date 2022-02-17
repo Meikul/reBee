@@ -63,6 +63,7 @@ body{
     column-count: 2;
     column-fill: auto;
     height: 375px;
+    overflow-x: scroll;
     li{
       position: relative;
       list-style: none;

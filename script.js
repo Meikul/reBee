@@ -252,13 +252,16 @@ function appendWorldList(word) {
   }
 
   document.getElementById('word-count-number').innerHTML = state.foundWords.length
-
   const capitalizedWord = word[0].toUpperCase() + word.slice(1)
 
   const list = document.getElementById('found-list')
   const entry = document.createElement('li')
   entry.appendChild(document.createTextNode(capitalizedWord))
   list.appendChild(entry)
+  // const colLength = 14
+  // if(list.childElementCount > colLength*2){
+  //   list.style.height = 'auto'
+  // }
 }
 
 function updateScore() {
