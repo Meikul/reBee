@@ -9,10 +9,21 @@ const state = {
 }
 
 async function windowLoaded() {
-  const gameData = await getGame()
-  console.log(gameData);
-  state.gameData = gameData
-  state.allLetters = state.gameData.center + state.gameData.letters
+  try {
+    const storedState = JSON.parse(localStorage.getItem('state'))
+    console.log(storedState);
+    state.gameData = storedState.gameData
+    state.foundWords = storedState.foundWords
+    state.allLetters = storedState.allLetters
+    state.score = storedState.score
+    fillWordList(state.foundWords)
+  } catch (error) {
+    console.error(error)
+    const gameData = await getGame()
+    console.log('no saved game');
+    state.gameData = gameData
+    state.allLetters = state.gameData.center + state.gameData.letters
+  }
   fillHexes(state.gameData.letters, state.gameData.center)
 
   document.getElementById('delete-btn').addEventListener('click', deleteLetter)
@@ -39,6 +50,7 @@ async function windowLoaded() {
 
   updateInputBox()
   updateScore()
+  saveState()
 }
 
 async function newRandomGame() {
@@ -53,6 +65,7 @@ async function newRandomGame() {
   fillHexes(state.gameData.letters, state.gameData.center)
   updateInputBox()
   updateScore()
+  saveState()
 }
 
 async function getGame(type = 'set') {
@@ -243,7 +256,14 @@ function clearWorldList() {
   document.getElementById('found-list').innerHTML = ''
 }
 
-function appendWorldList(word) {
+function fillWordList(words) {
+  document.getElementById('found-list').innerHTML = ''
+  words.forEach(w => {
+    appendWordList(w)
+  })
+}
+
+function appendWordList(word) {
   if(state.foundWords.length === 1){
     document.getElementById('word-count-plural').innerHTML = ''
   }
@@ -336,10 +356,11 @@ function checkWord() {
   else{
     state.score += scoreWord(state.currentInput)
     state.foundWords.push(state.currentInput)
-    appendWorldList(state.currentInput)
+    appendWordList(state.currentInput)
   }
   state.currentInput = ''
   updateScore()
+  saveState()
   updateInputBox()
 }
 
@@ -383,4 +404,8 @@ function scoreWord(word) {
 function deleteLetter() {
   state.currentInput = state.currentInput.slice(0, -1)
   updateInputBox()
+}
+
+function saveState() {
+  localStorage.setItem('state', JSON.stringify(state))
 }
