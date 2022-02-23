@@ -364,10 +364,19 @@ body {
   }
 }
 
-#new-game {
-  width: 250px;
-  color: white;
+#nav-btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
   margin-top: 50px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#nav-btns .btn {
+  width: 250px;
 }
 
 body.dark-mode {

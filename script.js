@@ -6,31 +6,32 @@ const state = {
   allLetters: '',
   score: 0,
   currentInput: '',
+  gameType: ''
 }
 
 async function windowLoaded() {
-  try {
-    const storedState = JSON.parse(localStorage.getItem('state'))
-    console.log(storedState);
+  const storedString = localStorage.getItem('state')
+  if(storedString){
+    const storedState = JSON.parse(storedString)
     state.gameData = storedState.gameData
     state.foundWords = storedState.foundWords
     state.allLetters = storedState.allLetters
     state.score = storedState.score
+    state.gameType = storedState.gameType
     fillWordList(state.foundWords)
-  } catch (error) {
-    console.error(error)
-    const gameData = await getGame()
-    console.log('no saved game');
-    state.gameData = gameData
-    state.allLetters = state.gameData.center + state.gameData.letters
+    fillHexes(state.gameData.letters, state.gameData.center)
   }
-  fillHexes(state.gameData.letters, state.gameData.center)
+  else{
+    console.log('no saved game');
+    setupGame('set')
+  }
 
   document.getElementById('delete-btn').addEventListener('click', deleteLetter)
   document.getElementById('shuffle-btn').addEventListener('click', shuffleLetters)
   document.getElementById('enter-btn').addEventListener('click', checkWord)
 
-  document.getElementById('new-game').addEventListener('click', newRandomGame)
+  document.getElementById('random-game').addEventListener('click', newRandomGame)
+  document.getElementById('today-game').addEventListener('click', todaysGame)
 
   const clickable = document.querySelectorAll('.clickable')
   clickable.forEach(elem => {
@@ -53,26 +54,43 @@ async function windowLoaded() {
   saveState()
 }
 
-async function newRandomGame() {
-  const gameData = await getGame('random')
+async function setupGame(type) {
+  const gameData = await fetchGameData(type)
   console.log(gameData);
   state.score = 0
   state.currentInput = ''
   state.foundWords = []
   state.gameData = gameData
+  state.gameType = type
   state.allLetters = state.gameData.center + state.gameData.letters
-  clearWorldList()
   fillHexes(state.gameData.letters, state.gameData.center)
+  clearWorldList()
   updateInputBox()
   updateScore()
   saveState()
 }
 
-async function getGame(type = 'set') {
-  if(type !== 'set' && type !== 'random') return
-  // const response = fetch(`https://freebee.fun/play/today`)
+async function newRandomGame() {
+  setupGame('random')
+}
+
+async function todaysGame() {
+  if(state.gameType !== 'today'){
+    setupGame('today')
+  }
+}
+
+async function fetchGameData(type) {
   if(type === 'random'){
     const response = fetch(`https://freebee.fun/cgi-bin/random`)
+    return (await response).json()
+  }
+  else if(type === 'today'){
+    const response = fetch(`https://freebee.fun/cgi-bin/today`)
+    return (await response).json()
+  }
+  else if(type === 'yesterday'){
+    const response = fetch(`https://freebee.fun/cgi-bin/yesterday`)
     return (await response).json()
   }
   else{
@@ -254,6 +272,7 @@ function updateInputBox() {
 
 function clearWorldList() {
   document.getElementById('found-list').innerHTML = ''
+  updateWordCount(0)
 }
 
 function fillWordList(words) {
@@ -261,17 +280,12 @@ function fillWordList(words) {
   words.forEach(w => {
     appendWordList(w)
   })
+  updateWordCount(state.foundWords.length)
 }
 
 function appendWordList(word) {
-  if(state.foundWords.length === 1){
-    document.getElementById('word-count-plural').innerHTML = ''
-  }
-  else{
-    document.getElementById('word-count-plural').innerHTML = 's'
-  }
+  updateWordCount(state.foundWords.length)
 
-  document.getElementById('word-count-number').innerHTML = state.foundWords.length
   const capitalizedWord = word[0].toUpperCase() + word.slice(1)
 
   const list = document.getElementById('found-list')
@@ -282,6 +296,16 @@ function appendWordList(word) {
   // if(list.childElementCount > colLength*2){
   //   list.style.height = 'auto'
   // }
+}
+
+function updateWordCount(count) {
+  if(count === 1){
+    document.getElementById('word-count-plural').innerHTML = ''
+  }
+  else{
+    document.getElementById('word-count-plural').innerHTML = 's'
+  }
+  document.getElementById('word-count-number').innerHTML = count
 }
 
 function updateScore() {
