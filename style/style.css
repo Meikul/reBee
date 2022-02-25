@@ -391,6 +391,10 @@ body.dark-mode .btn {
   border: 1px solid #777;
 }
 
+body.dark-mode .btn.highlighted {
+  background: #555;
+}
+
 body.dark-mode .hex::after {
   background: #282C2D;
 }

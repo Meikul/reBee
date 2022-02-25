@@ -343,6 +343,9 @@ body.dark-mode{
   }
   .btn{
     border: 1px solid #777;
+    &.highlighted{
+      background: #555;
+    }
   }
   .hex{
     &::after{
