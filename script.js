@@ -10,28 +10,15 @@ const state = {
 }
 
 async function windowLoaded() {
-  const storedString = localStorage.getItem('state')
-  if(storedString){
-    const storedState = JSON.parse(storedString)
-    state.gameData = storedState.gameData
-    state.foundWords = storedState.foundWords
-    state.allLetters = storedState.allLetters
-    state.score = storedState.score
-    state.gameType = storedState.gameType
-    fillWordList(state.foundWords)
-    fillHexes(state.gameData.letters, state.gameData.center)
-  }
-  else{
-    console.log('no saved game');
-    setupGame('set')
-  }
+  const savedGameType = localStorage.getItem('gameType')
+  setupSavedGame(savedGameType)
 
   document.getElementById('delete-btn').addEventListener('click', deleteLetter)
   document.getElementById('shuffle-btn').addEventListener('click', shuffleLetters)
   document.getElementById('enter-btn').addEventListener('click', checkWord)
 
-  document.getElementById('random-game').addEventListener('click', newRandomGame)
-  document.getElementById('today-game').addEventListener('click', todaysGame)
+  document.getElementById('random-game').addEventListener('click', setupRandomGame)
+  document.getElementById('today-game').addEventListener('click', setupTodayGame)
 
   const clickable = document.querySelectorAll('.clickable')
   clickable.forEach(elem => {
@@ -54,9 +41,8 @@ async function windowLoaded() {
   saveState()
 }
 
-async function setupGame(type) {
+async function setupNewGame(type) {
   const gameData = await fetchGameData(type)
-  console.log(gameData);
   state.score = 0
   state.currentInput = ''
   state.foundWords = []
@@ -70,13 +56,50 @@ async function setupGame(type) {
   saveState()
 }
 
-async function newRandomGame() {
-  setupGame('random')
+function setupSavedGame(type) {
+  let savedStateString
+  if(type === 'today'){
+    savedStateString = localStorage.getItem('todayState')
+  }
+  else if(type === 'random'){
+    savedStateString = localStorage.getItem('randState')
+  }
+
+  if(savedStateString){
+    const storedState = JSON.parse(savedStateString)
+    state.gameData = storedState.gameData
+    state.foundWords = storedState.foundWords
+    state.allLetters = storedState.allLetters
+    state.score = storedState.score
+    state.gameType = storedState.gameType
+    fillWordList(state.foundWords)
+    fillHexes(state.gameData.letters, state.gameData.center)
+  }
+  else{
+    console.log('no saved game');
+    setupNewGame(type)
+  }
 }
 
-async function todaysGame() {
-  if(state.gameType !== 'today'){
-    setupGame('today')
+async function setupRandomGame() {
+  localStorage.setItem('gameType', 'random')
+  if(state.gameType === 'random'){ // Already on random = new random game
+    setupNewGame('random')
+  }
+  else{
+    setupSavedGame('random')
+  }
+}
+
+async function setupTodayGame() {
+  localStorage.setItem('gameType', 'today')
+  const saveDate = localStorage.getItem('todayStateSaveDate')
+  const currentDate = (new Date()).toLocaleDateString('en-US')
+  if(currentDate === saveDate){
+    setupSavedGame('today')
+  }
+  else{
+    setupNewGame('today')
   }
 }
 
@@ -431,5 +454,12 @@ function deleteLetter() {
 }
 
 function saveState() {
-  localStorage.setItem('state', JSON.stringify(state))
+  if(state.gameType === 'today'){
+    const currentDate = (new Date()).toLocaleDateString('en-US')
+    localStorage.setItem('todayStateSaveDate', currentDate)
+    localStorage.setItem('todayState', JSON.stringify(state))
+  }
+  else if(state.gameType === 'random'){
+    localStorage.setItem('randState', JSON.stringify(state))
+  }
 }
