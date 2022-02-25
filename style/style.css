@@ -3,7 +3,6 @@ body {
   font-family: 'Cabin', sans-serif;
   font-weight: 700;
   font-size: 30px;
-  height: 1000px;
   margin: 0;
 }
 
@@ -382,6 +381,14 @@ body {
 body.dark-mode {
   background: #181A1B;
   color: white;
+}
+
+body.dark-mode #score-panel {
+  border: 1px solid #777;
+}
+
+body.dark-mode .btn {
+  border: 1px solid #777;
 }
 
 body.dark-mode .hex::after {

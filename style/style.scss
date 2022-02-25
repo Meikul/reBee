@@ -338,6 +338,12 @@ $wrapWidth: 599px;
 body.dark-mode{
   background: #181A1B;
   color: white;
+  #score-panel{
+    border: 1px solid #777;
+  }
+  .btn{
+    border: 1px solid #777;
+  }
   .hex{
     &::after{
       background: #282C2D;
