@@ -84,7 +84,9 @@ function setupSavedGame(type) {
 async function setupRandomGame() {
   localStorage.setItem('gameType', 'random')
   if(state.gameType === 'random'){ // Already on random = new random game
-    setupNewGame('random')
+    if(window.confirm('Would you like to start a new game?')){
+      setupNewGame('random')
+    }
   }
   else{
     setupSavedGame('random')
