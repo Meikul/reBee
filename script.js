@@ -1,5 +1,8 @@
 window.onload = windowLoaded;
 
+const RANDOM_TYPE = 'random'
+const TODAY_TYPE = 'today'
+
 const state = {
   gameData: {},
   foundWords: [],
@@ -38,7 +41,6 @@ async function windowLoaded() {
 
   updateInputBox()
   updateScore()
-  saveState()
 }
 
 async function setupNewGame(type) {
@@ -54,14 +56,18 @@ async function setupNewGame(type) {
   updateInputBox()
   updateScore()
   saveState()
+
+  if(type === TODAY_TYPE){
+    localStorage.setItem('todayGameDate', (new Date()).toLocaleDateString('en-US'))
+  }
 }
 
 function setupSavedGame(type) {
   let savedStateString
-  if(type === 'today'){
+  if(type === TODAY_TYPE){
     savedStateString = localStorage.getItem('todayState')
   }
-  else if(type === 'random'){
+  else if(type === RANDOM_TYPE){
     savedStateString = localStorage.getItem('randState')
   }
 
@@ -82,35 +88,36 @@ function setupSavedGame(type) {
 }
 
 async function setupRandomGame() {
-  localStorage.setItem('gameType', 'random')
-  if(state.gameType === 'random'){ // Already on random = new random game
+  localStorage.setItem('gameType', RANDOM_TYPE)
+  if(state.gameType === RANDOM_TYPE){ // Already on random = new random game
     if(window.confirm('Would you like to start a new game?')){
-      setupNewGame('random')
+      setupNewGame(RANDOM_TYPE)
     }
   }
   else{
-    setupSavedGame('random')
+    setupSavedGame(RANDOM_TYPE)
   }
 }
 
 async function setupTodayGame() {
-  localStorage.setItem('gameType', 'today')
-  const saveDate = localStorage.getItem('todayStateSaveDate')
+  localStorage.setItem('gameType', TODAY_TYPE)
+  const saveDate = localStorage.getItem('todayGameDate')
   const currentDate = (new Date()).toLocaleDateString('en-US')
   if(currentDate === saveDate){
-    setupSavedGame('today')
+    setupSavedGame(TODAY_TYPE)
   }
   else{
-    setupNewGame('today')
+    console.log('new day');
+    setupNewGame(TODAY_TYPE)
   }
 }
 
 async function fetchGameData(type) {
-  if(type === 'random'){
+  if(type === RANDOM_TYPE){
     const response = fetch(`https://freebee.fun/cgi-bin/random`)
     return (await response).json()
   }
-  else if(type === 'today'){
+  else if(type === TODAY_TYPE){
     const response = fetch(`https://freebee.fun/cgi-bin/today`)
     return (await response).json()
   }
@@ -241,17 +248,26 @@ function shuffleLetters() {
     a[j] = tmp;
   }
   const hexLetters = document.querySelectorAll('.hex-letter')
-  hexLetters.forEach(elem => {
-    elem.classList.add('hidden')
-  })
+  hideHexLetters()
 
   setTimeout(() => {
     fillHexes(a.join(''), state.gameData.center)
-    const hexLetters = document.querySelectorAll('.hex-letter')
-    hexLetters.forEach(elem => {
-      elem.classList.remove('hidden')
-    })
+    showHexLetters()
   }, 500)
+}
+
+function hideHexLetters() {
+  const hexLetters = document.querySelectorAll('.hex-letter')
+  hexLetters.forEach(elem => {
+    elem.classList.add('hidden')
+  })
+}
+
+function showHexLetters() {
+  const hexLetters = document.querySelectorAll('.hex-letter')
+  hexLetters.forEach(elem => {
+    elem.classList.remove('hidden')
+  })
 }
 
 function fillHexes(letters, center) {
@@ -456,12 +472,11 @@ function deleteLetter() {
 }
 
 function saveState() {
-  if(state.gameType === 'today'){
+  if(state.gameType === TODAY_TYPE){
     const currentDate = (new Date()).toLocaleDateString('en-US')
-    localStorage.setItem('todayStateSaveDate', currentDate)
     localStorage.setItem('todayState', JSON.stringify(state))
   }
-  else if(state.gameType === 'random'){
+  else if(state.gameType === RANDOM_TYPE){
     localStorage.setItem('randState', JSON.stringify(state))
   }
 }
